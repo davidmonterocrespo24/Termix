@@ -282,7 +282,7 @@ export function FileManagerOperations({
                         <div className="flex-1 min-w-0">
                             <h3 className="text-base sm:text-lg font-semibold text-white flex items-center gap-2 mb-1">
                                 <Upload className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"/>
-                                <span className="break-words">{t('fileManager.uploadFileTitle')}</span>}
+                                <span className="break-words">{t('fileManager.uploadFileTitle')}</span>
                             </h3>
                             <p className="text-xs text-muted-foreground break-words">
                                 {t('fileManager.maxFileSize')}

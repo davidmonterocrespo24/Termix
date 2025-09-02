@@ -129,7 +129,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
             if (!data.password || data.password.trim() === '') {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
-                    message: "Password is required when using password authentication",
+                    message: t('hosts.passwordRequired'),
                     path: ['password']
                 });
             }
@@ -137,14 +137,14 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
             if (!data.key) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
-                    message: "SSH Private Key is required when using key authentication",
+                    message: t('hosts.sshKeyRequired'),
                     path: ['key']
                 });
             }
             if (!data.keyType) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
-                    message: "Key Type is required when using key authentication",
+                    message: t('hosts.keyTypeRequired'),
                     path: ['keyType']
                 });
             }
