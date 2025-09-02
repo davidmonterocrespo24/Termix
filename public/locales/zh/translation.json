@@ -609,7 +609,8 @@
     "user": "用户",
     "authMethod": "认证方式",
     "local": "本地",
-    "external": "外部 (OIDC)"
+    "external": "外部 (OIDC)",
+    "selectPreferredLanguage": "选择您的界面首选语言"
   },
   "placeholders": {
     "enterCode": "000000",

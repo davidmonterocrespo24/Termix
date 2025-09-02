@@ -11,6 +11,7 @@ import {getUserInfo} from "@/ui/main-axios.ts";
 import {toast} from "sonner";
 import {PasswordReset} from "@/ui/User/PasswordReset.tsx";
 import {useTranslation} from "react-i18next";
+import {LanguageSwitcher} from "@/components/LanguageSwitcher";
 
 interface UserProfileProps {
     isTopbarOpen?: boolean;
@@ -144,6 +145,16 @@ export function UserProfile({isTopbarOpen = true}: UserProfileProps) {
                                             )
                                         )}
                                     </p>
+                                </div>
+                            </div>
+                            
+                            <div className="mt-6 pt-6 border-t">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <Label>{t('common.language')}</Label>
+                                        <p className="text-sm text-muted-foreground mt-1">{t('profile.selectPreferredLanguage')}</p>
+                                    </div>
+                                    <LanguageSwitcher />
                                 </div>
                             </div>
                         </CardContent>

@@ -609,7 +609,8 @@
     "user": "User",
     "authMethod": "Authentication Method",
     "local": "Local",
-    "external": "External (OIDC)"
+    "external": "External (OIDC)",
+    "selectPreferredLanguage": "Select your preferred language for the interface"
   },
   "placeholders": {
     "enterCode": "000000",
