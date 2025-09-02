@@ -621,7 +621,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                                                 >
                                                                     <span className="block w-full truncate"
                                                                           title={field.value?.name || 'Upload'}>
-                                                                        {field.value ? (editingHost ? 'Update Key' : field.value.name) : 'Upload'}
+                                                                        {field.value ? (editingHost ? t('hosts.updateKey') : field.value.name) : t('hosts.upload')}
                                                                     </span>
                                                                 </Button>
                                                             </div>
@@ -785,7 +785,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                             name="tunnelConnections"
                                             render={({field}) => (
                                                 <FormItem className="mt-4">
-                                                    <FormLabel>Tunnel Connections</FormLabel>
+                                                    <FormLabel>{t('hosts.tunnelConnections')}</FormLabel>
                                                     <FormControl>
                                                         <div className="space-y-4">
                                                             {field.value.map((connection, index) => (
@@ -1041,7 +1041,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                 transform: 'translateY(8px)'
                             }}
                         >
-                            {editingHost ? "Update Host" : "Add Host"}
+                            {editingHost ? t('hosts.updateHost') : t('hosts.addHost')}
                         </Button>
                     </footer>
                 </form>
