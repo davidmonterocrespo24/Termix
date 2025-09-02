@@ -326,7 +326,7 @@ const FileManagerLeftSidebar = forwardRef(function FileManagerSidebar(
 
         try {
             await renameSSHItem(sshSessionId, item.path, newName.trim());
-            toast.success(`${item.type === 'directory' ? 'Folder' : 'File'} renamed successfully`);
+            toast.success(`${item.type === 'directory' ? t('common.folder') : t('common.file')} ${t('common.renamedSuccessfully')}`);
             setRenamingItem(null);
             if (onOperationComplete) {
                 onOperationComplete();
@@ -343,7 +343,7 @@ const FileManagerLeftSidebar = forwardRef(function FileManagerSidebar(
 
         try {
             await deleteSSHItem(sshSessionId, item.path, item.type === 'directory');
-            toast.success(`${item.type === 'directory' ? 'Folder' : 'File'} deleted successfully`);
+            toast.success(`${item.type === 'directory' ? t('common.folder') : t('common.file')} ${t('common.deletedSuccessfully')}`);
             if (onOperationComplete) {
                 onOperationComplete();
             } else {
