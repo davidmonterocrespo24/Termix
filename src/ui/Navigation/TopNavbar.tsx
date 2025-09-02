@@ -13,6 +13,8 @@ import {
 import {Input} from "@/components/ui/input.tsx";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
+import {LanguageSwitcher} from "@/components/LanguageSwitcher";
+import {useTranslation} from "react-i18next";
 
 interface TopNavbarProps {
     isTopbarOpen: boolean;
@@ -23,6 +25,7 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
     const {state} = useSidebar();
     const {tabs, currentTab, setCurrentTab, setSplitScreenTab, removeTab, allSplitScreenTab} = useTabs() as any;
     const leftPosition = state === "collapsed" ? "26px" : "264px";
+    const {t} = useTranslation();
 
     const [toolsSheetOpen, setToolsSheetOpen] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
@@ -264,10 +267,12 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
                 </div>
 
                 <div className="flex items-center justify-center gap-2 flex-1 px-2">
+                    <LanguageSwitcher />
+                    
                     <Button
                         variant="outline"
                         className="w-[30px] h-[30px]"
-                        title="SSH Tools"
+                        title={t('nav.tools')}
                         onClick={() => setToolsSheetOpen(true)}
                     >
                         <Hammer className="h-4 w-4"/>
@@ -395,7 +400,7 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
                                                         keys supported):</label>
                                                     <Input
                                                         id="ssh-tools-input"
-                                                        placeholder="Type here"
+                                                        placeholder={t('placeholders.typeHere')}
                                                         onKeyDown={handleKeyDown}
                                                         onKeyPress={handleKeyPress}
                                                         className="font-mono mt-2"

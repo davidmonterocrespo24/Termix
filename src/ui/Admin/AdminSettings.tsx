@@ -26,6 +26,7 @@ import {
     removeAdminStatus, 
     deleteUser 
 } from "@/ui/main-axios.ts";
+import {useTranslation} from "react-i18next";
 
 function getCookie(name: string) {
     return document.cookie.split('; ').reduce((r, v) => {
@@ -40,6 +41,7 @@ interface AdminSettingsProps {
 
 export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.ReactElement {
     const {state: sidebarState} = useSidebar();
+    const {t} = useTranslation();
 
     const [allowRegistration, setAllowRegistration] = React.useState(true);
     const [regLoading, setRegLoading] = React.useState(false);
@@ -135,7 +137,7 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
             await updateOIDCConfig(oidcConfig);
             setOidcSuccess("OIDC configuration updated successfully!");
         } catch (err: any) {
-            setOidcError(err?.response?.data?.error || "Failed to update OIDC configuration");
+            setOidcError(err?.response?.data?.error || t('interface.failedToUpdateOidcConfig'));
         } finally {
             setOidcLoading(false);
         }
@@ -158,7 +160,7 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
             setNewAdminUsername("");
             fetchUsers();
         } catch (err: any) {
-            setMakeAdminError(err?.response?.data?.error || "Failed to make user admin");
+            setMakeAdminError(err?.response?.data?.error || t('interface.failedToMakeUserAdmin'));
         } finally {
             setMakeAdminLoading(false);
         }
@@ -200,7 +202,7 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
              className="bg-[#18181b] text-white rounded-lg border-2 border-[#303032] overflow-hidden">
             <div className="h-full w-full flex flex-col">
                 <div className="flex items-center justify-between px-3 pt-2 pb-2">
-                    <h1 className="font-bold text-lg">Admin Settings</h1>
+                    <h1 className="font-bold text-lg">{t('admin.title')}</h1>
                 </div>
                 <Separator className="p-0.25 w-full"/>
 
@@ -209,99 +211,98 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
                         <TabsList className="mb-4 bg-[#18181b] border-2 border-[#303032]">
                             <TabsTrigger value="registration" className="flex items-center gap-2">
                                 <Users className="h-4 w-4"/>
-                                General
+                                {t('common.settings')}
                             </TabsTrigger>
                             <TabsTrigger value="oidc" className="flex items-center gap-2">
                                 <Shield className="h-4 w-4"/>
-                                OIDC
+                                {t('admin.oidcSettings')}
                             </TabsTrigger>
                             <TabsTrigger value="users" className="flex items-center gap-2">
                                 <Users className="h-4 w-4"/>
-                                Users
+                                {t('admin.users')}
                             </TabsTrigger>
                             <TabsTrigger value="admins" className="flex items-center gap-2">
                                 <Shield className="h-4 w-4"/>
-                                Admins
+                                {t('nav.admin')}
                             </TabsTrigger>
                         </TabsList>
 
                         <TabsContent value="registration" className="space-y-6">
                             <div className="space-y-4">
-                                <h3 className="text-lg font-semibold">User Registration</h3>
+                                <h3 className="text-lg font-semibold">{t('admin.userManagement')}</h3>
                                 <label className="flex items-center gap-2">
                                     <Checkbox checked={allowRegistration} onCheckedChange={handleToggleRegistration}
                                               disabled={regLoading}/>
-                                    Allow new account registration
+                                    {t('admin.allowRegistration')}
                                 </label>
                             </div>
                         </TabsContent>
 
                         <TabsContent value="oidc" className="space-y-6">
                             <div className="space-y-4">
-                                <h3 className="text-lg font-semibold">External Authentication (OIDC)</h3>
-                                <p className="text-sm text-muted-foreground">Configure external identity provider for
-                                    OIDC/OAuth2 authentication.</p>
+                                <h3 className="text-lg font-semibold">{t('admin.externalAuthentication')}</h3>
+                                <p className="text-sm text-muted-foreground">{t('admin.configureExternalProvider')}</p>
 
                                 {oidcError && (
                                     <Alert variant="destructive">
-                                        <AlertTitle>Error</AlertTitle>
+                                        <AlertTitle>{t('common.error')}</AlertTitle>
                                         <AlertDescription>{oidcError}</AlertDescription>
                                     </Alert>
                                 )}
 
                                 <form onSubmit={handleOIDCConfigSubmit} className="space-y-4">
                                     <div className="space-y-2">
-                                        <Label htmlFor="client_id">Client ID</Label>
+                                        <Label htmlFor="client_id">{t('admin.clientId')}</Label>
                                         <Input id="client_id" value={oidcConfig.client_id}
                                                onChange={(e) => handleOIDCConfigChange('client_id', e.target.value)}
-                                               placeholder="your-client-id" required/>
+                                               placeholder={t('placeholders.clientId')} required/>
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="client_secret">Client Secret</Label>
+                                        <Label htmlFor="client_secret">{t('admin.clientSecret')}</Label>
                                         <Input id="client_secret" type="password" value={oidcConfig.client_secret}
                                                onChange={(e) => handleOIDCConfigChange('client_secret', e.target.value)}
-                                               placeholder="your-client-secret" required/>
+                                               placeholder={t('placeholders.clientSecret')} required/>
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="authorization_url">Authorization URL</Label>
+                                        <Label htmlFor="authorization_url">{t('admin.authorizationUrl')}</Label>
                                         <Input id="authorization_url" value={oidcConfig.authorization_url}
                                                onChange={(e) => handleOIDCConfigChange('authorization_url', e.target.value)}
-                                               placeholder="https://your-provider.com/application/o/authorize/"
+                                               placeholder={t('placeholders.authUrl')}
                                                required/>
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="issuer_url">Issuer URL</Label>
+                                        <Label htmlFor="issuer_url">{t('admin.issuerUrl')}</Label>
                                         <Input id="issuer_url" value={oidcConfig.issuer_url}
                                                onChange={(e) => handleOIDCConfigChange('issuer_url', e.target.value)}
-                                               placeholder="https://your-provider.com/application/o/termix/" required/>
+                                               placeholder={t('placeholders.redirectUrl')} required/>
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="token_url">Token URL</Label>
+                                        <Label htmlFor="token_url">{t('admin.tokenUrl')}</Label>
                                         <Input id="token_url" value={oidcConfig.token_url}
                                                onChange={(e) => handleOIDCConfigChange('token_url', e.target.value)}
-                                               placeholder="https://your-provider.com/application/o/token/" required/>
+                                               placeholder={t('placeholders.tokenUrl')} required/>
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="identifier_path">User Identifier Path</Label>
+                                        <Label htmlFor="identifier_path">{t('admin.userIdentifierPath')}</Label>
                                         <Input id="identifier_path" value={oidcConfig.identifier_path}
                                                onChange={(e) => handleOIDCConfigChange('identifier_path', e.target.value)}
-                                               placeholder="sub" required/>
+                                               placeholder={t('placeholders.userIdField')} required/>
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="name_path">Display Name Path</Label>
+                                        <Label htmlFor="name_path">{t('admin.displayNamePath')}</Label>
                                         <Input id="name_path" value={oidcConfig.name_path}
                                                onChange={(e) => handleOIDCConfigChange('name_path', e.target.value)}
-                                               placeholder="name" required/>
+                                               placeholder={t('placeholders.usernameField')} required/>
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="scopes">Scopes</Label>
+                                        <Label htmlFor="scopes">{t('admin.scopes')}</Label>
                                         <Input id="scopes" value={oidcConfig.scopes}
                                                onChange={(e) => handleOIDCConfigChange('scopes', (e.target as HTMLInputElement).value)}
-                                               placeholder="openid email profile" required/>
+                                               placeholder={t('placeholders.scopes')} required/>
                                     </div>
                                     <div className="flex gap-2 pt-2">
                                         <Button type="submit" className="flex-1"
-                                                disabled={oidcLoading}>{oidcLoading ? "Saving..." : "Save Configuration"}</Button>
+                                                disabled={oidcLoading}>{oidcLoading ? t('admin.saving') : t('admin.saveConfiguration')}</Button>
                                         <Button type="button" variant="outline" onClick={() => setOidcConfig({
                                             client_id: '',
                                             client_secret: '',
@@ -311,12 +312,12 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
                                             identifier_path: 'sub',
                                             name_path: 'name',
                                             scopes: 'openid email profile'
-                                        })}>Reset</Button>
+                                        })}>{t('admin.reset')}</Button>
                                     </div>
 
                                     {oidcSuccess && (
                                         <Alert>
-                                            <AlertTitle>Success</AlertTitle>
+                                            <AlertTitle>{t('admin.success')}</AlertTitle>
                                             <AlertDescription>{oidcSuccess}</AlertDescription>
                                         </Alert>
                                     )}
@@ -327,20 +328,20 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
                         <TabsContent value="users" className="space-y-6">
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
-                                    <h3 className="text-lg font-semibold">User Management</h3>
+                                    <h3 className="text-lg font-semibold">{t('admin.userManagement')}</h3>
                                     <Button onClick={fetchUsers} disabled={usersLoading} variant="outline"
-                                            size="sm">{usersLoading ? "Loading..." : "Refresh"}</Button>
+                                            size="sm">{usersLoading ? t('admin.loading') : t('admin.refresh')}</Button>
                                 </div>
                                 {usersLoading ? (
-                                    <div className="text-center py-8 text-muted-foreground">Loading users...</div>
+                                    <div className="text-center py-8 text-muted-foreground">{t('admin.loadingUsers')}</div>
                                 ) : (
                                     <div className="border rounded-md overflow-hidden">
                                         <Table>
                                             <TableHeader>
                                                 <TableRow>
-                                                    <TableHead className="px-4">Username</TableHead>
-                                                    <TableHead className="px-4">Type</TableHead>
-                                                    <TableHead className="px-4">Actions</TableHead>
+                                                    <TableHead className="px-4">{t('admin.username')}</TableHead>
+                                                    <TableHead className="px-4">{t('admin.type')}</TableHead>
+                                                    <TableHead className="px-4">{t('admin.actions')}</TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
@@ -350,11 +351,11 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
                                                             {user.username}
                                                             {user.is_admin && (
                                                                 <span
-                                                                    className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-muted/50 text-muted-foreground border border-border">Admin</span>
+                                                                    className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-muted/50 text-muted-foreground border border-border">{t('admin.adminBadge')}</span>
                                                             )}
                                                         </TableCell>
                                                         <TableCell
-                                                            className="px-4">{user.is_oidc ? "External" : "Local"}</TableCell>
+                                                            className="px-4">{user.is_oidc ? t('admin.external') : t('admin.local')}</TableCell>
                                                         <TableCell className="px-4">
                                                             <Button variant="ghost" size="sm"
                                                                     onClick={() => deleteUser(user.username)}
@@ -374,29 +375,29 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
 
                         <TabsContent value="admins" className="space-y-6">
                             <div className="space-y-6">
-                                <h3 className="text-lg font-semibold">Admin Management</h3>
+                                <h3 className="text-lg font-semibold">{t('admin.adminManagement')}</h3>
                                 <div className="space-y-4 p-6 border rounded-md bg-muted/50">
-                                    <h4 className="font-medium">Make User Admin</h4>
+                                    <h4 className="font-medium">{t('admin.makeUserAdmin')}</h4>
                                     <form onSubmit={makeUserAdmin} className="space-y-4">
                                         <div className="space-y-2">
-                                            <Label htmlFor="new-admin-username">Username</Label>
+                                            <Label htmlFor="new-admin-username">{t('admin.username')}</Label>
                                             <div className="flex gap-2">
                                                 <Input id="new-admin-username" value={newAdminUsername}
                                                        onChange={(e) => setNewAdminUsername(e.target.value)}
-                                                       placeholder="Enter username to make admin" required/>
+                                                       placeholder={t('placeholders.enterUsername')} required/>
                                                 <Button type="submit"
-                                                        disabled={makeAdminLoading || !newAdminUsername.trim()}>{makeAdminLoading ? "Adding..." : "Make Admin"}</Button>
+                                                        disabled={makeAdminLoading || !newAdminUsername.trim()}>{makeAdminLoading ? t('admin.adding') : t('admin.makeAdmin')}</Button>
                                             </div>
                                         </div>
                                         {makeAdminError && (
                                             <Alert variant="destructive">
-                                                <AlertTitle>Error</AlertTitle>
+                                                <AlertTitle>{t('common.error')}</AlertTitle>
                                                 <AlertDescription>{makeAdminError}</AlertDescription>
                                             </Alert>
                                         )}
                                         {makeAdminSuccess && (
                                             <Alert>
-                                                <AlertTitle>Success</AlertTitle>
+                                                <AlertTitle>{t('admin.success')}</AlertTitle>
                                                 <AlertDescription>{makeAdminSuccess}</AlertDescription>
                                             </Alert>
                                         )}
@@ -404,14 +405,14 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
                                 </div>
 
                                 <div className="space-y-4">
-                                    <h4 className="font-medium">Current Admins</h4>
+                                    <h4 className="font-medium">{t('admin.currentAdmins')}</h4>
                                     <div className="border rounded-md overflow-hidden">
                                         <Table>
                                             <TableHeader>
                                                 <TableRow>
-                                                    <TableHead className="px-4">Username</TableHead>
-                                                    <TableHead className="px-4">Type</TableHead>
-                                                    <TableHead className="px-4">Actions</TableHead>
+                                                    <TableHead className="px-4">{t('admin.username')}</TableHead>
+                                                    <TableHead className="px-4">{t('admin.type')}</TableHead>
+                                                    <TableHead className="px-4">{t('admin.actions')}</TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
@@ -423,13 +424,13 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
                                                                 className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-muted/50 text-muted-foreground border border-border">Admin</span>
                                                         </TableCell>
                                                         <TableCell
-                                                            className="px-4">{admin.is_oidc ? "External" : "Local"}</TableCell>
+                                                            className="px-4">{admin.is_oidc ? t('admin.external') : t('admin.local')}</TableCell>
                                                         <TableCell className="px-4">
                                                             <Button variant="ghost" size="sm"
                                                                     onClick={() => removeAdminStatus(admin.username)}
                                                                     className="text-orange-600 hover:text-orange-700 hover:bg-orange-50">
                                                                 <Shield className="h-4 w-4"/>
-                                                                Remove Admin
+                                                                {t('admin.removeAdminButton')}
                                                             </Button>
                                                         </TableCell>
                                                     </TableRow>
