@@ -701,7 +701,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                     name="enableTerminal"
                                     render={({field}) => (
                                         <FormItem>
-                                            <FormLabel>Enable Terminal</FormLabel>
+                                            <FormLabel>{t('hosts.enableTerminal')}</FormLabel>
                                             <FormControl>
                                                 <Switch
                                                     checked={field.value}
@@ -709,7 +709,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                                 />
                                             </FormControl>
                                             <FormDescription>
-                                                Enable/disable host visibility in Terminal tab.
+                                                {t('hosts.enableTerminalDesc')}
                                             </FormDescription>
                                         </FormItem>
                                     )}
@@ -721,7 +721,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                     name="enableTunnel"
                                     render={({field}) => (
                                         <FormItem>
-                                            <FormLabel>Enable Tunnel</FormLabel>
+                                            <FormLabel>{t('hosts.enableTunnel')}</FormLabel>
                                             <FormControl>
                                                 <Switch
                                                     checked={field.value}
@@ -729,7 +729,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                                 />
                                             </FormControl>
                                             <FormDescription>
-                                                Enable/disable host visibility in Tunnel tab.
+                                                {t('hosts.enableTunnelDesc')}
                                             </FormDescription>
                                         </FormItem>
                                     )}
@@ -739,44 +739,27 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                     <>
                                         <Alert className="mt-4">
                                             <AlertDescription>
-                                                <strong>Sshpass Required For Password Authentication</strong>
+                                                <strong>{t('hosts.sshpassRequired')}</strong>
                                                 <div>
-                                                    For password-based SSH authentication, sshpass must be installed on
-                                                    both the local and remote servers. Install with: <code
-                                                    className="bg-muted px-1 rounded inline">sudo apt install
-                                                    sshpass</code> (Debian/Ubuntu) or the equivalent for your OS.
+                                                    {t('hosts.sshpassInstallCommand')}
                                                 </div>
                                                 <div className="mt-2">
-                                                    <strong>Other installation methods:</strong>
-                                                    <div>• CentOS/RHEL/Fedora: <code
-                                                        className="bg-muted px-1 rounded inline">sudo yum install
-                                                        sshpass</code> or <code
-                                                        className="bg-muted px-1 rounded inline">sudo dnf install
-                                                        sshpass</code></div>
-                                                    <div>• macOS: <code className="bg-muted px-1 rounded inline">brew
-                                                        install hudochenkov/sshpass/sshpass</code></div>
-                                                    <div>• Windows: Use WSL or consider SSH key authentication</div>
+                                                    <strong>{t('hosts.otherInstallMethods')}</strong>
+                                                    <div>• {t('hosts.sshpassOSInstructions.centos')}</div>
+                                                    <div>• {t('hosts.sshpassOSInstructions.macos')}</div>
+                                                    <div>• {t('hosts.sshpassOSInstructions.windows')}</div>
                                                 </div>
                                             </AlertDescription>
                                         </Alert>
 
                                         <Alert className="mt-4">
                                             <AlertDescription>
-                                                <strong>SSH Server Configuration Required</strong>
-                                                <div>For reverse SSH tunnels, the endpoint SSH server must allow:</div>
-                                                <div>• <code className="bg-muted px-1 rounded inline">GatewayPorts
-                                                    yes</code> (bind remote ports)
-                                                </div>
-                                                <div>• <code className="bg-muted px-1 rounded inline">AllowTcpForwarding
-                                                    yes</code> (port forwarding)
-                                                </div>
-                                                <div>• <code className="bg-muted px-1 rounded inline">PermitRootLogin
-                                                    yes</code> (if using root)
-                                                </div>
-                                                <div className="mt-2">Edit <code
-                                                    className="bg-muted px-1 rounded inline">/etc/ssh/sshd_config</code> and
-                                                    restart SSH: <code className="bg-muted px-1 rounded inline">sudo
-                                                        systemctl restart sshd</code></div>
+                                                <strong>{t('hosts.sshServerConfig')}</strong>
+                                                <div>{t('hosts.sshServerConfigReverse')}</div>
+                                                <div>• <code className="bg-muted px-1 rounded inline">{t('hosts.gatewayPorts')}</code></div>
+                                                <div>• <code className="bg-muted px-1 rounded inline">{t('hosts.allowTcpForwarding')}</code></div>
+                                                <div>• <code className="bg-muted px-1 rounded inline">{t('hosts.permitRootLogin')}</code></div>
+                                                <div className="mt-2">{t('hosts.editSshConfig')}</div>
                                             </AlertDescription>
                                         </Alert>
 
@@ -793,7 +776,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                                                      className="p-4 border rounded-lg bg-muted/50">
                                                                     <div
                                                                         className="flex items-center justify-between mb-3">
-                                                                        <h4 className="text-sm font-bold">Connection {index + 1}</h4>
+                                                                        <h4 className="text-sm font-bold">{t('hosts.connection')} {index + 1}</h4>
                                                                         <Button
                                                                             type="button"
                                                                             variant="ghost"
@@ -803,7 +786,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                                                                 field.onChange(newConnections);
                                                                             }}
                                                                         >
-                                                                            Remove
+                                                                            {t('hosts.remove')}
                                                                         </Button>
                                                                     </div>
                                                                     <div className="grid grid-cols-12 gap-4">
@@ -812,7 +795,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                                                             name={`tunnelConnections.${index}.sourcePort`}
                                                                             render={({field: sourcePortField}) => (
                                                                                 <FormItem className="col-span-4">
-                                                                                    <FormLabel>Source Port
+                                                                                    <FormLabel>{t('hosts.sourcePort')}
                                                                                         (Source refers to the Current
                                                                                         Connection Details in the
                                                                                         General tab)</FormLabel>
@@ -828,7 +811,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                                                             name={`tunnelConnections.${index}.endpointPort`}
                                                                             render={({field: endpointPortField}) => (
                                                                                 <FormItem className="col-span-4">
-                                                                                    <FormLabel>Endpoint Port
+                                                                                    <FormLabel>{t('hosts.endpointPort')}
                                                                                         (Remote)</FormLabel>
                                                                                     <FormControl>
                                                                                         <Input
@@ -911,7 +894,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                                                             name={`tunnelConnections.${index}.maxRetries`}
                                                                             render={({field: maxRetriesField}) => (
                                                                                 <FormItem className="col-span-4">
-                                                                                    <FormLabel>Max Retries</FormLabel>
+                                                                                    <FormLabel>{t('hosts.maxRetries', 'Max Retries')}</FormLabel>
                                                                                     <FormControl>
                                                                                         <Input
                                                                                             placeholder="3" {...maxRetriesField} />
@@ -928,8 +911,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                                                             name={`tunnelConnections.${index}.retryInterval`}
                                                                             render={({field: retryIntervalField}) => (
                                                                                 <FormItem className="col-span-4">
-                                                                                    <FormLabel>Retry Interval
-                                                                                        (seconds)</FormLabel>
+                                                                                    <FormLabel>{t('hosts.retryInterval')}</FormLabel>
                                                                                     <FormControl>
                                                                                         <Input
                                                                                             placeholder="10" {...retryIntervalField} />
@@ -955,8 +937,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                                                                         />
                                                                                     </FormControl>
                                                                                     <FormDescription>
-                                                                                        Automatically start this tunnel
-                                                                                        when the container launches.
+                                                                                        {t('hosts.autoStartDesc')}
                                                                                     </FormDescription>
                                                                                 </FormItem>
                                                                             )}
@@ -978,7 +959,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                                                     }]);
                                                                 }}
                                                             >
-                                                                Add Tunnel Connection
+                                                                {t('hosts.addConnection')}
                                                             </Button>
                                                         </div>
                                                     </FormControl>
@@ -996,7 +977,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                     name="enableFileManager"
                                     render={({field}) => (
                                         <FormItem>
-                                            <FormLabel>Enable File Manager</FormLabel>
+                                            <FormLabel>{t('hosts.enableFileManager')}</FormLabel>
                                             <FormControl>
                                                 <Switch
                                                     checked={field.value}
@@ -1004,7 +985,7 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                                 />
                                             </FormControl>
                                             <FormDescription>
-                                                Enable/disable host visibility in File Manager tab.
+                                                {t('hosts.enableFileManagerDesc')}
                                             </FormDescription>
                                         </FormItem>
                                     )}
@@ -1017,12 +998,11 @@ export function HostManagerHostEditor({editingHost, onFormSubmit}: SSHManagerHos
                                             name="defaultPath"
                                             render={({field}) => (
                                                 <FormItem>
-                                                    <FormLabel>Default Path</FormLabel>
+                                                    <FormLabel>{t('hosts.defaultPath')}</FormLabel>
                                                     <FormControl>
                                                         <Input placeholder={t('placeholders.homePath')} {...field} />
                                                     </FormControl>
-                                                    <FormDescription>Set default directory shown when connected via
-                                                        File Manager</FormDescription>
+                                                    <FormDescription>{t('hosts.defaultPathDesc')}</FormDescription>
                                                 </FormItem>
                                             )}
                                         />

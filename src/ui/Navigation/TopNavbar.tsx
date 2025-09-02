@@ -330,13 +330,13 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="flex items-center justify-between p-4 border-b border-[#303032]">
-                            <h2 className="text-lg font-semibold text-white">SSH Tools</h2>
+                            <h2 className="text-lg font-semibold text-white">{t('sshTools.title')}</h2>
                             <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => setToolsSheetOpen(false)}
                                 className="h-8 w-8 p-0 hover:bg-red-500 hover:text-white transition-colors flex items-center justify-center"
-                                title="Close SSH Tools"
+                                title={t('sshTools.closeTools')}
                             >
                                 <span className="text-lg font-bold leading-none">×</span>
                             </Button>
@@ -345,7 +345,7 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
                         <div className="flex-1 overflow-y-auto p-4">
                             <div className="space-y-4">
                                 <h1 className="font-semibold">
-                                    Key Recording
+                                    {t('sshTools.keyRecording')}
                                 </h1>
 
                                 <div className="space-y-4">
@@ -357,7 +357,7 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
                                                     className="flex-1"
                                                     variant="outline"
                                                 >
-                                                    Start Key Recording
+                                                    {t('sshTools.startKeyRecording')}
                                                 </Button>
                                             ) : (
                                                 <Button
@@ -365,7 +365,7 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
                                                     className="flex-1"
                                                     variant="destructive"
                                                 >
-                                                    Stop Key Recording
+                                                    {t('sshTools.stopKeyRecording')}
                                                 </Button>
                                             )}
                                         </div>
@@ -373,8 +373,7 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
                                         {isRecording && (
                                             <>
                                                 <div className="space-y-2">
-                                                    <label className="text-sm font-medium text-white">Select
-                                                        terminals:</label>
+                                                    <label className="text-sm font-medium text-white">{t('sshTools.selectTerminals')}</label>
                                                     <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto mt-2">
                                                         {terminalTabs.map(tab => (
                                                             <Button
@@ -396,8 +395,7 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
                                                 </div>
 
                                                 <div className="space-y-2">
-                                                    <label className="text-sm font-medium text-white">Type commands (all
-                                                        keys supported):</label>
+                                                    <label className="text-sm font-medium text-white">{t('sshTools.typeCommands')}</label>
                                                     <Input
                                                         id="ssh-tools-input"
                                                         placeholder={t('placeholders.typeHere')}
@@ -408,8 +406,7 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
                                                         readOnly
                                                     />
                                                     <p className="text-xs text-muted-foreground">
-                                                        Commands will be sent to {selectedTabIds.length} selected
-                                                        terminal(s).
+                                                        {t('sshTools.commandsWillBeSent', { count: selectedTabIds.length })}
                                                     </p>
                                                 </div>
                                             </>
@@ -420,7 +417,7 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
                                 <Separator className="my-4"/>
 
                                 <h1 className="font-semibold">
-                                    Settings
+                                    {t('sshTools.settings')}
                                 </h1>
 
                                 <div className="flex items-center space-x-2">
@@ -433,14 +430,14 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
                                         htmlFor="enable-copy-paste"
                                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-white"
                                     >
-                                        Enable right‑click copy/paste
+                                        {t('sshTools.enableRightClickCopyPaste')}
                                     </label>
                                 </div>
 
                                 <Separator className="my-4"/>
 
                                 <p className="pt-2 pb-2 text-sm text-gray-500">
-                                    Have ideas for what should come next for ssh tools? Share them on{" "}
+                                    {t('sshTools.shareIdeas')}{" "}
                                     <a
                                         href="https://github.com/LukeGus/Termix/issues/new"
                                         target="_blank"

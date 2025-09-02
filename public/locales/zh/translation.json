@@ -1,4 +1,21 @@
 {
+  "sshTools": {
+    "title": "SSH 工具",
+    "closeTools": "关闭 SSH 工具",
+    "keyRecording": "按键录制",
+    "startKeyRecording": "开始按键录制",
+    "stopKeyRecording": "停止按键录制",
+    "selectTerminals": "选择终端：",
+    "typeCommands": "输入命令（支持所有按键）：",
+    "commandsWillBeSent": "命令将发送到 {{count}} 个选中的终端。",
+    "settings": "设置",
+    "enableRightClickCopyPaste": "启用右键复制/粘贴",
+    "shareIdeas": "对 SSH 工具有什么想法？在此分享"
+  },
+  "homepage": {
+    "loggedInTitle": "登录成功！",
+    "loggedInMessage": "您已登录！使用侧边栏访问所有可用工具。要开始使用，请在 SSH 管理器选项卡中创建 SSH 主机。创建后，您可以使用侧边栏中的其他应用程序连接到该主机。"
+  },
   "common": {
     "close": "关闭",
     "online": "在线",
@@ -91,6 +108,7 @@
     "splitScreen": "分屏",
     "closeTab": "关闭标签页",
     "sshManager": "SSH 管理器",
+    "hostManager": "主机管理器",
     "cannotSplitTab": "无法分割此标签页"
   },
   "admin": {
@@ -199,7 +217,46 @@
     "connectionSuccess": "连接成功",
     "connectionDetails": "连接详情",
     "organization": "组织管理",
-    "addTags": "添加标签（空格添加）"
+    "addTags": "添加标签（空格添加）",
+    "sourcePort": "源端口",
+    "endpointPort": "目标端口",
+    "retryInterval": "重试间隔（秒）",
+    "connection": "连接",
+    "remove": "移除",
+    "addConnection": "添加连接",
+    "sshpassRequired": "密码认证需要安装 Sshpass",
+    "sshpassInstallCommand": "安装命令：sudo apt install sshpass",
+    "sshServerConfig": "需要配置 SSH 服务器",
+    "sshServerConfigInstructions": "运行以下命令以允许密码认证：",
+    "sshConfigCommand1": "sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config",
+    "sshConfigCommand2": "sudo systemctl restart sshd",
+    "localPortForwarding": "本地端口转发",
+    "localPortForwardingDesc": "通过 SSH 连接将本地端口转发到远程服务器",
+    "remotePortForwarding": "远程端口转发",
+    "remotePortForwardingDesc": "通过 SSH 连接将远程端口转发到本地服务器",
+    "dynamicPortForwarding": "动态端口转发（SOCKS 代理）",
+    "dynamicPortForwardingDesc": "在本地计算机上创建 SOCKS 代理，通过 SSH 连接路由流量",
+    "bindAddress": "绑定地址",
+    "hostViewer": "主机查看器",
+    "configuration": "配置",
+    "maxRetries": "最大重试次数",
+    "tunnelConnections": "隧道连接",
+    "enableTerminalDesc": "启用/禁用在终端选项卡中显示此主机",
+    "enableTunnelDesc": "启用/禁用在隧道选项卡中显示此主机",
+    "enableFileManagerDesc": "启用/禁用在文件管理器选项卡中显示此主机",
+    "autoStartDesc": "容器启动时自动启动此隧道",
+    "defaultPathDesc": "打开此主机文件管理器时的默认目录",
+    "otherInstallMethods": "其他安装方法：",
+    "sshpassOSInstructions": {
+      "centos": "CentOS/RHEL/Fedora: sudo yum install sshpass 或 sudo dnf install sshpass",
+      "macos": "macOS: brew install hudochenkov/sshpass/sshpass",
+      "windows": "Windows: 使用 WSL 或考虑使用 SSH 密钥认证"
+    },
+    "sshServerConfigReverse": "对于反向 SSH 隧道，端点 SSH 服务器必须允许：",
+    "gatewayPorts": "GatewayPorts yes（绑定远程端口）",
+    "allowTcpForwarding": "AllowTcpForwarding yes（端口转发）",
+    "permitRootLogin": "PermitRootLogin yes（如果使用 root）",
+    "editSshConfig": "编辑 /etc/ssh/sshd_config 并重启 SSH: sudo systemctl restart sshd"
   },
   "terminal": {
     "title": "终端",
@@ -619,7 +676,6 @@
     "noSshHosts": "没有 SSH 主机",
     "sshHosts": "SSH 主机",
     "importSshHosts": "从 JSON 导入 SSH 主机",
-    "hostViewer": "主机查看器",
     "clientId": "客户端 ID",
     "clientSecret": "客户端密钥",
     "error": "错误",
@@ -677,7 +733,6 @@
     "maxRetries": "最大重试次数",
     "upload": "上传",
     "updateKey": "更新密钥",
-    "hostViewer": "主机查看器",
     "sshpassRequired": "密码认证需要 Sshpass",
     "sshServerConfigRequired": "需要 SSH 服务器配置",
     "sshManagerAlreadyOpen": "SSH 管理器已打开",

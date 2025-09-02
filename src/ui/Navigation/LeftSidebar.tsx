@@ -433,9 +433,9 @@ export function LeftSidebar({
                         <SidebarGroup className="!m-0 !p-0 !-mb-2">
                             <Button className="m-2 flex flex-row font-semibold border-2 !border-[#303032]" variant="outline"
                                     onClick={openSshManagerTab} disabled={!!sshManagerTab || isSplitScreenActive}
-                                    title={sshManagerTab ? 'SSH Manager already open' : isSplitScreenActive ? 'Disabled during split screen' : undefined}>
+                                    title={sshManagerTab ? t('interface.sshManagerAlreadyOpen') : isSplitScreenActive ? t('interface.disabledDuringSplitScreen') : undefined}>
                                 <HardDrive strokeWidth="2.5"/>
-                                Host Manager
+                                {t('nav.hostManager')}
                             </Button>
                         </SidebarGroup>
                         <Separator className="p-0.25"/>
