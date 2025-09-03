@@ -27,6 +27,7 @@ import {
     deleteUser 
 } from "@/ui/main-axios.ts";
 import {useTranslation} from "react-i18next";
+import {toast} from "sonner";
 
 function getCookie(name: string) {
     return document.cookie.split('; ').reduce((r, v) => {
@@ -57,8 +58,6 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
         scopes: 'openid email profile'
     });
     const [oidcLoading, setOidcLoading] = React.useState(false);
-    const [oidcError, setOidcError] = React.useState<string | null>(null);
-    const [oidcSuccess, setOidcSuccess] = React.useState<string | null>(null);
 
     const [users, setUsers] = React.useState<Array<{
         id: string;
@@ -69,8 +68,6 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
     const [usersLoading, setUsersLoading] = React.useState(false);
     const [newAdminUsername, setNewAdminUsername] = React.useState("");
     const [makeAdminLoading, setMakeAdminLoading] = React.useState(false);
-    const [makeAdminError, setMakeAdminError] = React.useState<string | null>(null);
-    const [makeAdminSuccess, setMakeAdminSuccess] = React.useState<string | null>(null);
 
     React.useEffect(() => {
         const jwt = getCookie("jwt");
@@ -121,13 +118,11 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
     const handleOIDCConfigSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setOidcLoading(true);
-        setOidcError(null);
-        setOidcSuccess(null);
 
         const required = ['client_id', 'client_secret', 'issuer_url', 'authorization_url', 'token_url'];
         const missing = required.filter(f => !oidcConfig[f as keyof typeof oidcConfig]);
         if (missing.length > 0) {
-            setOidcError(`Missing required fields: ${missing.join(', ')}`);
+            toast.error(`Missing required fields: ${missing.join(', ')}`);
             setOidcLoading(false);
             return;
         }
@@ -135,9 +130,9 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
         const jwt = getCookie("jwt");
         try {
             await updateOIDCConfig(oidcConfig);
-            setOidcSuccess("OIDC configuration updated successfully!");
+            toast.success("OIDC configuration updated successfully!");
         } catch (err: any) {
-            setOidcError(err?.response?.data?.error || t('interface.failedToUpdateOidcConfig'));
+            toast.error(err?.response?.data?.error || t('interface.failedToUpdateOidcConfig'));
         } finally {
             setOidcLoading(false);
         }
@@ -147,42 +142,44 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
         setOidcConfig(prev => ({...prev, [field]: value}));
     };
 
-    const makeUserAdmin = async (e: React.FormEvent) => {
+    const handleMakeUserAdmin = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!newAdminUsername.trim()) return;
         setMakeAdminLoading(true);
-        setMakeAdminError(null);
-        setMakeAdminSuccess(null);
         const jwt = getCookie("jwt");
         try {
             await makeUserAdmin(newAdminUsername.trim());
-            setMakeAdminSuccess(`User ${newAdminUsername} is now an admin`);
+            toast.success(`User ${newAdminUsername} is now an admin`);
             setNewAdminUsername("");
             fetchUsers();
         } catch (err: any) {
-            setMakeAdminError(err?.response?.data?.error || t('interface.failedToMakeUserAdmin'));
+            toast.error(err?.response?.data?.error || t('interface.failedToMakeUserAdmin'));
         } finally {
             setMakeAdminLoading(false);
         }
     };
 
-    const removeAdminStatus = async (username: string) => {
+    const handleRemoveAdminStatus = async (username: string) => {
         if (!confirm(`Remove admin status from ${username}?`)) return;
         const jwt = getCookie("jwt");
         try {
             await removeAdminStatus(username);
+            toast.success(`Admin status removed from ${username}`);
             fetchUsers();
-        } catch {
+        } catch (err: any) {
+            toast.error(err?.response?.data?.error || 'Failed to remove admin status');
         }
     };
 
-    const deleteUser = async (username: string) => {
+    const handleDeleteUser = async (username: string) => {
         if (!confirm(`Delete user ${username}? This cannot be undone.`)) return;
         const jwt = getCookie("jwt");
         try {
             await deleteUser(username);
+            toast.success(`User ${username} deleted successfully`);
             fetchUsers();
-        } catch {
+        } catch (err: any) {
+            toast.error(err?.response?.data?.error || 'Failed to delete user');
         }
     };
 
@@ -243,12 +240,6 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
                                 <h3 className="text-lg font-semibold">{t('admin.externalAuthentication')}</h3>
                                 <p className="text-sm text-muted-foreground">{t('admin.configureExternalProvider')}</p>
 
-                                {oidcError && (
-                                    <Alert variant="destructive">
-                                        <AlertTitle>{t('common.error')}</AlertTitle>
-                                        <AlertDescription>{oidcError}</AlertDescription>
-                                    </Alert>
-                                )}
 
                                 <form onSubmit={handleOIDCConfigSubmit} className="space-y-4">
                                     <div className="space-y-2">
@@ -315,12 +306,6 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
                                         })}>{t('admin.reset')}</Button>
                                     </div>
 
-                                    {oidcSuccess && (
-                                        <Alert>
-                                            <AlertTitle>{t('admin.success')}</AlertTitle>
-                                            <AlertDescription>{oidcSuccess}</AlertDescription>
-                                        </Alert>
-                                    )}
                                 </form>
                             </div>
                         </TabsContent>
@@ -358,7 +343,7 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
                                                             className="px-4">{user.is_oidc ? t('admin.external') : t('admin.local')}</TableCell>
                                                         <TableCell className="px-4">
                                                             <Button variant="ghost" size="sm"
-                                                                    onClick={() => deleteUser(user.username)}
+                                                                    onClick={() => handleDeleteUser(user.username)}
                                                                     className="text-red-600 hover:text-red-700 hover:bg-red-50"
                                                                     disabled={user.is_admin}>
                                                                 <Trash2 className="h-4 w-4"/>
@@ -378,7 +363,7 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
                                 <h3 className="text-lg font-semibold">{t('admin.adminManagement')}</h3>
                                 <div className="space-y-4 p-6 border rounded-md bg-muted/50">
                                     <h4 className="font-medium">{t('admin.makeUserAdmin')}</h4>
-                                    <form onSubmit={makeUserAdmin} className="space-y-4">
+                                    <form onSubmit={handleMakeUserAdmin} className="space-y-4">
                                         <div className="space-y-2">
                                             <Label htmlFor="new-admin-username">{t('admin.username')}</Label>
                                             <div className="flex gap-2">
@@ -389,18 +374,6 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
                                                         disabled={makeAdminLoading || !newAdminUsername.trim()}>{makeAdminLoading ? t('admin.adding') : t('admin.makeAdmin')}</Button>
                                             </div>
                                         </div>
-                                        {makeAdminError && (
-                                            <Alert variant="destructive">
-                                                <AlertTitle>{t('common.error')}</AlertTitle>
-                                                <AlertDescription>{makeAdminError}</AlertDescription>
-                                            </Alert>
-                                        )}
-                                        {makeAdminSuccess && (
-                                            <Alert>
-                                                <AlertTitle>{t('admin.success')}</AlertTitle>
-                                                <AlertDescription>{makeAdminSuccess}</AlertDescription>
-                                            </Alert>
-                                        )}
                                     </form>
                                 </div>
 
@@ -427,7 +400,7 @@ export function AdminSettings({isTopbarOpen = true}: AdminSettingsProps): React.
                                                             className="px-4">{admin.is_oidc ? t('admin.external') : t('admin.local')}</TableCell>
                                                         <TableCell className="px-4">
                                                             <Button variant="ghost" size="sm"
-                                                                    onClick={() => removeAdminStatus(admin.username)}
+                                                                    onClick={() => handleRemoveAdminStatus(admin.username)}
                                                                     className="text-orange-600 hover:text-orange-700 hover:bg-orange-50">
                                                                 <Shield className="h-4 w-4"/>
                                                                 {t('admin.removeAdminButton')}
